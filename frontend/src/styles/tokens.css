@@ -1,0 +1,18 @@
+:root {
+  --color-bg: #ffffff;
+  --color-text: #0a0a0a;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-surface: #f9fafb;
+  --color-accent: #2563eb;
+}
+
+/* Dark mode tokens (toggle in a later phase) */
+[data-theme="dark"] {
+  --color-bg: #0a0a0a;
+  --color-text: #fafafa;
+  --color-muted: #9ca3af;
+  --color-border: #27272a;
+  --color-surface: #18181b;
+  --color-accent: #3b82f6;
+}

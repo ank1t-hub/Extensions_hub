@@ -1,0 +1,74 @@
+# ExtensionHub
+
+A minimalist developer-focused platform to browse extensions, read documentation, and download releases.
+
+## Stack
+
+- **Frontend:** React, Vite, Tailwind CSS
+- **Backend:** FastAPI
+- **Database:** MySQL 8
+
+## Prerequisites
+
+- Node.js 18+
+- Python 3.11+
+- Docker Desktop (for local MySQL)
+
+## Quick start
+
+### 1. Environment
+
+```bash
+cp .env.example .env
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+Edit `.env` files with your local values.
+
+### 2. Database (Docker)
+
+```bash
+docker compose up -d
+```
+
+MySQL runs on `localhost:3306` by default.
+
+### 3. Backend
+
+```bash
+cd backend
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+- API: http://localhost:8000
+- Docs: http://localhost:8000/docs
+- Health: http://localhost:8000/api/v1/health
+
+### 4. Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+App: http://localhost:5173
+
+## Project structure
+
+```
+Extensions_hub/
+├── frontend/     # React + Tailwind
+├── backend/      # FastAPI
+├── docs/         # Architecture & API contract
+└── scripts/      # Dev helpers
+```
+
+## Development phases
+
+See `docs/architecture.md` for the phased roadmap. Phase 0 covers scaffolding and local tooling only.
