@@ -1,15 +1,15 @@
-# ExtensionHub — Database Schema (planned)
+# ExtensionHub — Database Schema
 
-Implemented in **Phase 1** with SQLAlchemy + Alembic.
+Implemented in **Phase 1** with SQLAlchemy models and Alembic migration `001_initial`.
 
 ## `users`
 
 | Column | Type | Notes |
 |--------|------|--------|
-| id | UUID (PK) | |
+| id | UUID (CHAR 36) PK | |
 | username | VARCHAR(64) UNIQUE | |
 | email | VARCHAR(255) UNIQUE | |
-| password_hash | VARCHAR(255) | |
+| password_hash | VARCHAR(255) | bcrypt |
 | role | ENUM | `admin`, `developer`, `user` |
 | is_active | BOOLEAN | default true |
 | created_at | DATETIME | |
@@ -34,7 +34,7 @@ Implemented in **Phase 1** with SQLAlchemy + Alembic.
 |--------|------|--------|
 | id | UUID (PK) | |
 | extension_id | UUID (FK) | |
-| version | VARCHAR(50) | |
+| version | VARCHAR(50) | unique per extension |
 | changelog | TEXT | optional |
 | file_path | VARCHAR(512) | |
 | is_latest | BOOLEAN | |
@@ -46,10 +46,10 @@ Implemented in **Phase 1** with SQLAlchemy + Alembic.
 |--------|------|--------|
 | id | UUID (PK) | |
 | extension_id | UUID (FK) UNIQUE | one doc per extension (MVP) |
-| markdown_content | LONGTEXT | |
+| markdown_content | TEXT | |
 | updated_at | DATETIME | |
 
-## `categories` (optional MVP+)
+## `categories`
 
 | Column | Type |
 |--------|------|
@@ -63,9 +63,27 @@ Implemented in **Phase 1** with SQLAlchemy + Alembic.
 
 ---
 
+## Migrations & seed
+
+```bash
+cd backend
+alembic upgrade head
+python ../scripts/seed-dev-data.py
+```
+
+**Dev seed accounts** (change in production):
+
+| Email | Password | Role |
+|-------|----------|------|
+| admin@extensionhub.local | Admin123! | admin |
+| dev@extensionhub.local | Dev123! | developer |
+| user@extensionhub.local | User123! | user |
+
+---
+
 ## Relationships
 
 - User **1—N** Extensions (as author)
 - Extension **1—N** ExtensionVersions
 - Extension **1—1** Documentation (MVP)
-- Extension **N—M** Categories (optional)
+- Extension **N—M** Categories

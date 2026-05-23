@@ -69,6 +69,21 @@ Extensions_hub/
 └── scripts/      # Dev helpers
 ```
 
+## Database setup (Phase 1)
+
+With MySQL running (`docker compose up -d`):
+
+```bash
+cd backend
+# activate venv, then:
+pip install -r requirements.txt
+alembic upgrade head
+python ../scripts/seed-dev-data.py
+```
+
 ## Development phases
 
-See `docs/architecture.md` for the phased roadmap. Phase 0 covers scaffolding and local tooling only.
+See `docs/architecture.md` for the phased roadmap.
+
+- **Phase 0** — Scaffold, Docker, health check, base UI
+- **Phase 1** — SQLAlchemy models, Alembic migrations, Pydantic schemas, dev seed
