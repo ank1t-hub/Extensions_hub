@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config.settings import get_settings
 from app.database.connection import check_database_connection
-from app.routers import auth
+from app.routers import auth, downloads, extensions
 
 settings = get_settings()
 
@@ -24,6 +24,8 @@ app.add_middleware(
 
 api = FastAPI()
 api.include_router(auth.router)
+api.include_router(extensions.router)
+api.include_router(downloads.router)
 
 
 @api.get("/health")

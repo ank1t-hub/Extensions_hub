@@ -75,9 +75,11 @@ python ../scripts/seed-dev-data.py
 
 | Email | Password | Role |
 |-------|----------|------|
-| admin@extensionhub.local | Admin123! | admin |
-| dev@extensionhub.local | Dev123! | developer |
-| user@extensionhub.local | User123! | user |
+| admin@example.com | Admin123! | admin |
+| dev@example.com | Dev123! | developer |
+| user@example.com | User123! | user |
+
+> Uses `@example.com` because Pydantic `EmailStr` rejects `.local` addresses.
 
 ---
 

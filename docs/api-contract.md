@@ -76,7 +76,7 @@ Interactive docs: `http://localhost:8000/docs`
 
 ---
 
-## Extensions (Phase 3)
+## Extensions (Phase 3 — implemented)
 
 ### `GET /extensions`
 

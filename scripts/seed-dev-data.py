@@ -15,22 +15,23 @@ from app.database.connection import SessionLocal
 from app.models import Category, User
 from app.models.user import UserRole
 
+# Use example.com — Pydantic EmailStr rejects reserved TLDs like .local
 DEV_USERS = [
     {
         "username": "admin",
-        "email": "admin@extensionhub.local",
+        "email": "admin@example.com",
         "password": "Admin123!",
         "role": UserRole.admin,
     },
     {
         "username": "devuser",
-        "email": "dev@extensionhub.local",
+        "email": "dev@example.com",
         "password": "Dev123!",
         "role": UserRole.developer,
     },
     {
         "username": "testuser",
-        "email": "user@extensionhub.local",
+        "email": "user@example.com",
         "password": "User123!",
         "role": UserRole.user,
     },
@@ -46,10 +47,19 @@ DEV_CATEGORIES = [
 
 def seed_users(db) -> None:
     for data in DEV_USERS:
-        exists = db.scalar(select(User).where(User.email == data["email"]))
-        if exists:
-            print(f"  skip user (exists): {data['email']}")
+        user = db.scalar(select(User).where(User.username == data["username"]))
+        if user:
+            if user.email != data["email"]:
+                user.email = data["email"]
+                print(f"  updated email for {data['username']}: {data['email']}")
+            else:
+                print(f"  skip user (exists): {data['email']}")
             continue
+
+        if db.scalar(select(User).where(User.email == data["email"])):
+            print(f"  skip user (email taken): {data['email']}")
+            continue
+
         user = User(
             username=data["username"],
             email=data["email"],

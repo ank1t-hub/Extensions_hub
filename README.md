@@ -90,3 +90,6 @@ See `docs/architecture.md` for the phased roadmap.
 - **Phase 0** — Scaffold, Docker, health check, base UI
 - **Phase 1** — SQLAlchemy models, Alembic migrations, Pydantic schemas, dev seed
 - **Phase 2** — JWT auth (signup/login/logout/me), RBAC dependencies, frontend auth UI
+- **Phase 3** — Extension CRUD, file upload, listing/search, download API
+
+**Dev login emails** (Pydantic-valid): `admin@example.com`, `dev@example.com`, `user@example.com` — passwords in `docs/database-schema.md`. Re-run `python scripts/seed-dev-data.py` to fix old `.local` emails in DB.
