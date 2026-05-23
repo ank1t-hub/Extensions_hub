@@ -5,6 +5,7 @@ import DashboardLayout from "../layouts/DashboardLayout.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import HomePage from "../pages/HomePage.jsx";
 import ExtensionsPage from "../pages/ExtensionsPage.jsx";
+import ExtensionDetailsPage from "../pages/ExtensionDetailsPage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import SignupPage from "../pages/SignupPage.jsx";
 import DeveloperDashboardPage from "../pages/developer/DeveloperDashboardPage.jsx";
@@ -18,6 +19,7 @@ export default function AppRoutes() {
       <Route element={<PublicLayout />}>
         <Route index element={<HomePage />} />
         <Route path="extensions" element={<ExtensionsPage />} />
+        <Route path="extensions/:id" element={<ExtensionDetailsPage />} />
 
         <Route element={<AuthLayout />}>
           <Route path="login" element={<LoginPage />} />
