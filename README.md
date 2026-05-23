@@ -16,7 +16,7 @@ A minimalist developer-focused platform to browse extensions, read documentation
 
 ## Quick start
 
-### 1. Environment
+### 1. Environment (Phase 0.2 — required before Phase 1 migrations)
 
 ```bash
 cp .env.example .env
@@ -24,7 +24,9 @@ cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
 ```
 
-Edit `.env` files with your local values.
+Edit `.env` files with your local values. See [docs/env-setup.md](docs/env-setup.md) for how the two `.env` files relate to each phase.
+
+**Important:** `MYSQL_PORT` in root `.env` must match the port in `backend/.env` → `DATABASE_URL` (e.g. both `3307`).
 
 ### 2. Database (Docker)
 
