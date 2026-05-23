@@ -8,6 +8,7 @@ import ExtensionsPage from "../pages/ExtensionsPage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import SignupPage from "../pages/SignupPage.jsx";
 import DeveloperDashboardPage from "../pages/developer/DeveloperDashboardPage.jsx";
+import ManageDocumentationPage from "../pages/developer/ManageDocumentationPage.jsx";
 import AdminDashboardPage from "../pages/admin/AdminDashboardPage.jsx";
 import { USER_ROLES } from "../utils/constants.js";
 
@@ -31,6 +32,7 @@ export default function AppRoutes() {
       >
         <Route element={<DashboardLayout />}>
           <Route path="developer" element={<DeveloperDashboardPage />} />
+          <Route path="developer/docs/:extensionId" element={<ManageDocumentationPage />} />
         </Route>
       </Route>
 
