@@ -89,3 +89,4 @@ See `docs/architecture.md` for the phased roadmap.
 
 - **Phase 0** — Scaffold, Docker, health check, base UI
 - **Phase 1** — SQLAlchemy models, Alembic migrations, Pydantic schemas, dev seed
+- **Phase 2** — JWT auth (signup/login/logout/me), RBAC dependencies, frontend auth UI

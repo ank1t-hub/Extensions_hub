@@ -25,7 +25,7 @@ Interactive docs: `http://localhost:8000/docs`
 
 ---
 
-## Authentication (Phase 2)
+## Authentication (Phase 2 — implemented)
 
 ### `POST /auth/signup`
 
@@ -66,7 +66,13 @@ Interactive docs: `http://localhost:8000/docs`
 
 **Headers:** `Authorization: Bearer <token>`
 
-**Response 200** — `{ "message": "logged out" }` (client discards token; optional blocklist later).
+**Response 200** — `{ "message": "Logged out successfully" }` (client clears stored token).
+
+### `GET /auth/me`
+
+**Headers:** `Authorization: Bearer <token>`
+
+**Response 200** — current user object (same shape as signup `user`).
 
 ---
 
