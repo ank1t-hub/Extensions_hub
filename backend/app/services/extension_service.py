@@ -241,3 +241,56 @@ def get_download_version(
 def increment_download_count(db: Session, extension: Extension) -> None:
     extension.download_count += 1
     db.commit()
+
+
+async def create_extension_version(
+    db: Session,
+    *,
+    extension_id: str,
+    version: str,
+    changelog: str | None,
+    file: UploadFile,
+    user: User,
+) -> ExtensionDetailRead:
+    extension = get_extension(db, extension_id)
+    assert_can_modify(extension, user)
+
+    # Check if this version string already exists for this extension
+    from sqlalchemy import and_
+    existing = db.scalar(
+        select(ExtensionVersion).where(
+            and_(
+                ExtensionVersion.extension_id == extension_id,
+                ExtensionVersion.version == version,
+            )
+        )
+    )
+    if existing:
+        raise ExtensionServiceError(f"Version {version} already exists for this extension", 400)
+
+    # Mark all previous versions as not latest
+    for v in extension.versions:
+        v.is_latest = False
+
+    # Save file
+    relative_path, _ = await save_extension_file(
+        extension_id=extension_id,
+        version=version,
+        file=file,
+    )
+
+    # Add new version
+    ext_version = ExtensionVersion(
+        extension_id=extension_id,
+        version=version,
+        changelog=changelog,
+        file_path=relative_path,
+        is_latest=True,
+    )
+    db.add(ext_version)
+    db.commit()
+    db.refresh(extension)
+
+    extension = get_extension(db, extension_id)
+    return _to_detail(extension)
+

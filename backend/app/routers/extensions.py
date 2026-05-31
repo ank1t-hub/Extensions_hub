@@ -41,6 +41,21 @@ def get_extensions(
     return PaginatedResponse(items=items, total=total, page=page, limit=limit)
 
 
+@router.get("/user/me", response_model=list[ExtensionListItem])
+def get_my_extensions(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> list[ExtensionListItem]:
+    from sqlalchemy import select
+    from app.models.extension import Extension
+    from app.services.extension_service import _to_list_item, _load_extension_query
+    
+    rows = db.scalars(
+        _load_extension_query().where(Extension.author_id == current_user.id).order_by(Extension.created_at.desc())
+    ).all()
+    return [_to_list_item(ext) for ext in rows]
+
+
 @router.get("/{extension_id}", response_model=ExtensionDetailRead)
 def get_extension_detail(extension_id: str, db: Session = Depends(get_db)) -> ExtensionDetailRead:
     try:
@@ -106,3 +121,27 @@ def remove_extension(
         delete_extension(db, extension=extension, user=current_user)
     except ExtensionServiceError as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.message) from exc
+
+
+@router.post("/{extension_id}/versions", response_model=ExtensionDetailRead)
+async def post_extension_version(
+    extension_id: str,
+    version: str = Form(...),
+    changelog: str | None = Form(None),
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> ExtensionDetailRead:
+    from app.services.extension_service import create_extension_version
+    try:
+        return await create_extension_version(
+            db,
+            extension_id=extension_id,
+            version=version,
+            changelog=changelog,
+            file=file,
+            user=current_user,
+        )
+    except ExtensionServiceError as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.message) from exc
+

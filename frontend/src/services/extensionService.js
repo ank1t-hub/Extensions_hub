@@ -23,3 +23,42 @@ export function getDownloadUrl(extensionId, version) {
   const params = version ? `?version=${encodeURIComponent(version)}` : "";
   return `${base}/download/${extensionId}${params}`;
 }
+
+export async function listMyExtensions() {
+  const res = await apiFetch("/extensions/user/me");
+  return parseJsonResponse(res);
+}
+
+export async function uploadExtension(formData) {
+  const res = await apiFetch("/extensions", {
+    method: "POST",
+    body: formData,
+  });
+  return parseJsonResponse(res);
+}
+
+export async function updateExtension(id, data) {
+  const res = await apiFetch(`/extensions/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+  return parseJsonResponse(res);
+}
+
+export async function deleteExtension(id) {
+  const res = await apiFetch(`/extensions/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) {
+    throw new Error("Failed to delete extension");
+  }
+}
+
+export async function uploadVersion(id, formData) {
+  const res = await apiFetch(`/extensions/${id}/versions`, {
+    method: "POST",
+    body: formData,
+  });
+  return parseJsonResponse(res);
+}
+

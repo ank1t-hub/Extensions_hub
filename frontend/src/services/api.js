@@ -15,10 +15,10 @@ export function setStoredToken(token) {
 export async function apiFetch(path, options = {}) {
   const url = `${API_BASE_URL}${path}`;
   const token = getStoredToken();
-  const headers = {
-    "Content-Type": "application/json",
-    ...options.headers,
-  };
+  const headers = { ...options.headers };
+  if (!(options.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
